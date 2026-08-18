@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#ffd9e3" />
+<title>A little something for you ♡</title>
+
+<!-- Fonts: a romantic display serif + a soft rounded body sans -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Quicksand:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================= AMBIENT BACKGROUND (always present) ================= -->
+<div class="ambient-bg" aria-hidden="true">
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+  <div class="glow glow-c"></div>
+  <canvas id="particle-canvas"></canvas>
+</div>
+
+<!-- ================= MUSIC TOGGLE (floating, always visible) ================= -->
+<button id="music-toggle" class="music-toggle" aria-label="Toggle background music">
+  <span id="music-icon">♫</span> <span id="music-label">Music</span>
+</button>
+<!--
+  MUSIC FILE PLACEHOLDER:
+  Put your song file at:  ./music.mp3
+  It will NOT autoplay (browsers block that). She presses the "♫ Music" button whenever she wants it.
+-->
+<audio id="bg-music" loop preload="none">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ================= SCENE 0 : THE FLYER ================= -->
+<section id="flyer-scene" class="scene flyer-scene">
+  <div class="flyer-hearts-burst" id="burst-container" aria-hidden="true"></div>
+
+  <div class="flyer-card" id="flyer-card">
+    <div class="flyer-ribbon">for you</div>
+    <div class="flyer-sparkle s1">✦</div>
+    <div class="flyer-sparkle s2">✧</div>
+    <div class="flyer-sparkle s3">✦</div>
+    <p class="flyer-kicker" id="flyer-kicker">a little something for you</p>
+    <h1 class="flyer-title">
+      <span id="flyer-heart">♡</span>
+    </h1>
+    <p class="flyer-sub" id="flyer-sub">I made this specifically for you.</p>
+    <button class="btn btn-primary" id="open-btn">
+      <span>Open it</span> <span class="heart-inline">♡</span>
+    </button>
+    <p class="flyer-hint">(go on, tap it)</p>
+  </div>
+</section>
+
+<!-- ================= MAIN EXPERIENCE (hidden until opened) ================= -->
+<main id="main-experience" class="main-experience" hidden>
+
+  <!-- ---- LANDING ---- -->
+  <section id="landing" class="scene landing-scene">
+    <div class="landing-content">
+      <p class="eyebrow">✧ hi ✧</p>
+      <h1 class="big-heading" id="landing-heading">Hey, you.</h1>
+      <p class="landing-sub" id="landing-sub">I wanted to make something a little different for you. ♡</p>
+      <button class="btn btn-primary" id="explore-btn">Explore</button>
+      <div class="scroll-cue" aria-hidden="true">
+        <span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---- SECTION 1: THE LETTER ---- -->
+  <section id="letter-section" class="scene section-block">
+    <p class="section-eyebrow">01 — a little letter</p>
+    <div class="letter-card glass">
+      <div class="letter-body" id="letter-body">
+        <!-- Lines are typed in one at a time by script.js from CONFIG.letterLines -->
+      </div>
+      <button class="btn btn-ghost letter-continue" id="letter-continue" hidden>Continue →</button>
+    </div>
+  </section>
+
+  <!-- ---- SECTION 2: THINGS I LIKE ABOUT YOU ---- -->
+  <section id="likes-section" class="scene section-block">
+    <p class="section-eyebrow">02 — things I like about you</p>
+    <h2 class="section-title">A few reasons, out of many.</h2>
+    <p class="section-hint">Tap a card to open it.</p>
+    <div class="likes-grid" id="likes-grid">
+      <!-- cards injected by script.js from CONFIG.likes -->
+    </div>
+  </section>
+
+  <!-- ---- SECTION 3: MINI GAME ---- -->
+  <section id="game-section" class="scene section-block">
+    <p class="section-eyebrow">03 — a tiny game</p>
+    <h2 class="section-title">Catch the Hearts ♡</h2>
+    <p class="section-hint" id="game-hint">Tap the hearts before they float away. Ready?</p>
+
+    <div class="game-panel">
+      <div class="game-hud">
+        <div class="hud-pill">Score: <span id="game-score">0</span></div>
+        <div class="hud-pill">Time: <span id="game-time">--</span></div>
+      </div>
+      <div class="game-field" id="game-field">
+        <button class="btn btn-primary" id="game-start-btn">Start</button>
+      </div>
+      <div class="game-result glass" id="game-result" hidden>
+        <p id="game-result-line1">You caught 0 hearts.</p>
+        <p id="game-result-line2">But I think you missed one...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---- SECTION 4: MEMORY CONSTELLATION ---- -->
+  <section id="sky-section" class="scene section-block sky-block">
+    <p class="section-eyebrow light">04 — our little constellation</p>
+    <h2 class="section-title light">Every star is a small moment.</h2>
+    <p class="section-hint light">Tap a star to remember it.</p>
+    <div class="sky-wrap">
+      <canvas id="sky-canvas"></canvas>
+      <div id="sky-stars"><!-- clickable star hotspots injected by script.js --></div>
+    </div>
+  </section>
+
+  <!-- ---- SECTION 5: FINAL ---- -->
+  <section id="final-section" class="scene section-block final-block">
+    <div class="final-inner" id="final-inner">
+      <p class="final-line" data-line>You made it to the end.</p>
+      <p class="final-line" data-line>But honestly...</p>
+      <p class="final-line" data-line>I don't really have a fancy ending.</p>
+      <p class="final-line" data-line>I just wanted to say...</p>
+      <p class="final-line final-highlight" data-line>I'm really happy that I met you. ♡</p>
+      <button class="btn btn-primary" id="one-last-thing-btn">One last thing...</button>
+    </div>
+
+    <div class="proposal glass" id="proposal" hidden>
+      <p class="proposal-text">Would you let me keep courting you? ♡</p>
+      <div class="proposal-buttons">
+        <button class="btn btn-primary" id="yes-btn">Yes ♡</button>
+        <button class="btn btn-ghost" id="think-btn">Let me think...</button>
+      </div>
+      <p class="proposal-response" id="proposal-response" hidden></p>
+    </div>
+
+    <canvas id="confetti-canvas"></canvas>
+  </section>
+
+</main>
+
+<!-- ================= COMPANION CHARACTER ================= -->
+<div class="companion-wrap" id="companion-wrap">
+  <div class="companion-bubble" id="companion-bubble" hidden></div>
+  <button class="companion" id="companion" aria-label="A tiny companion">
+    <svg viewBox="0 0 100 100" width="64" height="64" aria-hidden="true">
+      <!-- simple cute bunny -->
+      <ellipse cx="35" cy="18" rx="7" ry="20" fill="#fff" stroke="#e8879e" stroke-width="2"/>
+      <ellipse cx="60" cy="18" rx="7" ry="20" fill="#fff" stroke="#e8879e" stroke-width="2"/>
+      <ellipse cx="35" cy="22" rx="3" ry="12" fill="#ffd9e3"/>
+      <ellipse cx="60" cy="22" rx="3" ry="12" fill="#ffd9e3"/>
+      <circle cx="48" cy="60" r="32" fill="#fff" stroke="#e8879e" stroke-width="2"/>
+      <circle cx="37" cy="55" r="4" fill="#4a3b4d" class="companion-eye"/>
+      <circle cx="59" cy="55" r="4" fill="#4a3b4d" class="companion-eye"/>
+      <ellipse cx="48" cy="66" rx="4" ry="3" fill="#e8879e"/>
+      <circle cx="24" cy="66" r="6" fill="#ffd9e3" opacity="0.8"/>
+      <circle cx="72" cy="66" r="6" fill="#ffd9e3" opacity="0.8"/>
+    </svg>
+  </button>
+</div>
+
+<!-- ================= HIDDEN EASTER EGG BUTTON (findable, not impossible) ================= -->
+<button class="secret-heart" id="secret-heart" aria-label="a tiny hidden heart">♡</button>
+
+<div class="egg-toast" id="egg-toast" hidden></div>
+
+<script src="script.js"></script>
+</body>
+</html>
